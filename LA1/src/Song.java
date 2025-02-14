@@ -4,14 +4,17 @@ public class Song {
 	private String artist;
 	private String albumName;
 	private String genre;
+    	//added year just in case we may need it, if not we can delete.
+    	private String year;
 	private int rating;
 	private boolean favorited;
 	
-	public Song(String songName, String artist, String albumName, String genre) {
+	public Song(String songName, String artist, String albumName, String genre, String year) {
 		this.songName = songName;
 		this.albumName = albumName;
 		this.artist = artist;
 		this.genre = genre;
+        this.year = year;
 	}
 	
 	public String getSongName() {
