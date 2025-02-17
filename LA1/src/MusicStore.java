@@ -20,13 +20,14 @@ public class MusicStore {
 	//method for creating filenames from the content of the albums.txt
 	public void creatingFileNames(){
 		// we can delete try catch and write throws FileNotFoundException to the method
-		try (Scanner scanner = new Scanner(new File("albums.txt"))){
-			while(scanner.hasNextLine()){
-				String line = scanner.nextLine();
+		try (Scanner scanLine = new Scanner(new File("albums.txt"))){
+			while(scanLine.hasNextLine()){
+				String line = scanLine.nextLine();
 				String[] data = line.split(",");
 				String albumFile = data[0] + "_" + data[1] + ".txt";
 				fileNames.add(albumFile);
 			}
+			scanLine.close();
 			for(int i = 0; i < fileNames.size(); i++) {
 				System.out.println(fileNames.get(i));
 			}
@@ -58,7 +59,9 @@ public class MusicStore {
 			//reading songs
 			while(myReader.hasNextLine()){
 				String songName = myReader.nextLine();
-				songs.add(new Song(songName, artist, albumTitle, genre, year));
+				Song storeSong = new Song(songName, artist, albumTitle, genre, year);
+				songs.add(storeSong);
+				albums.get(i).addSong(storeSong);
 			}
 			myReader.close();
 		}
