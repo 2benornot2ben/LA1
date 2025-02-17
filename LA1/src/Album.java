@@ -5,18 +5,18 @@ public class Album {
 	private String artist;
 	private String genre;
 	private String year;
-	private ArrayList<String> songs;
+	private ArrayList<Song> songs;
+	
 	public Album(String albumName, String artist, String genre, String year) {
 		this.albumName = albumName;
 		this.artist = artist;
 		this.genre = genre;
 		this.year = year;
-		// May be replaced with a class in the future.
-		this.songs = new ArrayList<String>();
+		this.songs = new ArrayList<Song>();
 	}
 	
-	public void addSong(String title) {
-		songs.add(title);
+	public void addSong(Song songInst) {
+		songs.add(songInst);
 	}
 	
 	public String getAlbumName() {
@@ -37,7 +37,8 @@ public class Album {
 	}
 	
 	// This method might not be used.
-	public ArrayList<String> getSongList() {
-		return new ArrayList<String>(songs);
+	// This now uses classes, so this really might not be used.
+	public ArrayList<Song> getSongList() {
+		return new ArrayList<Song>(songs);
 	}
 }
