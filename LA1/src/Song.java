@@ -1,11 +1,10 @@
-
 public class Song {
 	private String songName;
 	private String artist;
 	private String albumName;
 	private String genre;
-    	//added year just in case we may need it, if not we can delete.
-    	private String year;
+    //added year just in case we may need it, if not we can delete.
+    private String year;
 	private int rating;
 	private boolean favorited;
 	
@@ -31,6 +30,10 @@ public class Song {
 	
 	public String getGenre() {
 		return genre;
+	}
+	
+	public String getYear() {
+		return year;
 	}
 	
 	public int getRating() {
