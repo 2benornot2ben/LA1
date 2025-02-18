@@ -14,6 +14,7 @@ public class Song {
 		this.artist = artist;
 		this.genre = genre;
         this.year = year;
+        this.favorited = false;
 	}
 	
 	public String getSongName() {
