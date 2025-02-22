@@ -12,9 +12,19 @@ public class PlayList {
 	public void addSong(Song songInst) {
 		songs.add(songInst);
 	}
-	
+
+    // added remove song 
+	public void removeSong(Song songInst){
+        for(int i = 0; i < songs.size(); i++){
+            if(songs.get(i).getSongName().equals(songInst.getSongName())){
+                songs.remove(i);
+                break;
+            }
+        }
+    }
+
 	public String getPlayListName() {
-		return playListName;
+		return this.playListName;
 	}
 	
 	// This method might not be used.
