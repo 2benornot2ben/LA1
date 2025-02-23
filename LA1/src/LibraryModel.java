@@ -59,7 +59,7 @@ public class LibraryModel {
             }
         }
         for(int i = 0; i < favoriteSongs.size(); i++){
-            System.out.println(favoriteSongs.get(i));
+            System.out.println((i + 1) + " " + favoriteSongs.get(i));
         }
 	}
 	
