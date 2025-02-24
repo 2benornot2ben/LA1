@@ -19,6 +19,16 @@ public class Song {
         this.favorited = false;
 	}
 	
+	public Song(Song incomingSong) {
+		this.songName = incomingSong.getSongName();
+		this.albumName = incomingSong.getAlbumName();
+		this.artist = incomingSong.getArtist();
+		this.genre = incomingSong.getGenre();
+        this.year = incomingSong.getYear();
+        this.favorited = incomingSong.getFavorited();
+        this.rating = incomingSong.getRating();
+	}
+	
 	public String getSongName() {
 		return songName;
 	}

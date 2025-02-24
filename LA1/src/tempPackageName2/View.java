@@ -26,7 +26,7 @@ public class View {
 	Scanner getInput = new Scanner(System.in);
 	String holdInput = "";
 	String holdInputLower = "";
-	public void main(String args[]) {
+	public View() {
 		boolean running = true;
 		while (running) {
 			// Whenever it gets reset to having NO current input, it gets reset here.
@@ -41,12 +41,17 @@ public class View {
 			System.out.println("Enter: \"Add\" \"Album OR Song\" to add to Library or Playlists");
 			System.out.println("Enter: \"Create\" \"{PlaylistName}\" to create a new playlist. No spaces in the name."); 
 			System.out.println("Enter: \"Rate\" \"{SongName}\" to rate a song. You only need to type the first few letters."); // This will also handle FAVORITING
+			System.out.println("Enter: \"Exit\" to kill the program. You will need to rerun it after.");
 			System.out.println("This is not case sensitive, but is spelling sensitive.");
 			holdInput = getInput.nextLine();
 			holdInputLower = holdInput.toLowerCase();
 			if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("musicstore")) {
 				// I unfortunately have to split these two because of playlists. Shame.
 				// Function...
+				// Ask what do you want to search by
+				// List out the 4 possible combinations (1-4)
+				// Ask for title/author according to what he chose
+				// Have it print using print list functions (Seriously, don't write it all out here)
 				System.out.println("DEBUG: Search MusicStore");
 			} else if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("library")) {
 				// Function...
@@ -56,6 +61,11 @@ public class View {
 				// Input validation. Next function will handle the split between the two types. I think...
 				// Function...
 				System.out.println("DEBUG: Add Album/Song");
+				// Then ask the user to type something to search BY
+				// (Probably the name)
+				// 1: Song1details
+				// 2: Song2details
+				// etc...
 			} else if (holdInputLower.split(" ")[0].equals("create") && holdInputLower.length() > 7
 					&& !(holdInputLower.substring(7).contains(" "))) {
 				// This will not allow you to make a playlist if there's a space anywhere in the name.
@@ -65,6 +75,10 @@ public class View {
 				// This will not allow you to search for nothing. Sorry. (Unless you consider spaces as "nothing")
 				rateSong(holdInputLower.split(" ")[1]);
 				System.out.println("DEBUG: Rate Song");
+			} else if (holdInputLower.split(" ")[0].equals("exit")) {
+				// Kills the program
+				running = false;
+				System.out.println("DEBUG: EXITED");
 			} else {
 				System.out.println("Invalid instruction! Did you spell everything right? Resetting.");
 				//System.out.println(""); // Extra whitespace
@@ -75,6 +89,10 @@ public class View {
 	}
 	
 	// Functions.
+	
+	public static void main(String[] args) {
+		View bleh = new View();
+	}
 	
 	private void rateSong(String name) {
 		// So, this is going to pick into musicstore, it's going to pass it the name,
@@ -106,7 +124,7 @@ public class View {
 			System.out.print(i + ": ");
 			if (type == 1) System.out.print(((Song) looper.get(i)).getSongName());
 			// I... Don't know if this will work. In fact, i'm so unsure that i'll stop here.
-			// Let's make the database able to return things for rateSong before we continue...
+			// Let's make the database able to return things for rateSong before we continue...	
 		}
 		
 		

@@ -20,11 +20,11 @@ public class LibraryModel {
 	}
 	
 	public void addSongToList(String title, String artist, String albumName, String genre, String year) {
-		songList.add(new Song(title, artist, albumName, genre, year));
+		songList.add(new Song(title, artist, albumName, genre, year)); // >:C
     }
 	
 	public void addAlbumToList(String title, String artist, String genre, String year) {
-		albumList.add(new Album(title, artist, genre, year));
+		albumList.add(new Album(title, artist, genre, year)); // >:CCCCCCCCCCCCCCCCCCCCCCCCCCc
 	}
 	
 	public void printLibrarySongList() {
@@ -59,7 +59,7 @@ public class LibraryModel {
             }
         }
         for(int i = 0; i < favoriteSongs.size(); i++){
-            System.out.println((i + 1) + " " + favoriteSongs.get(i));
+            System.out.println((i + 1) + " " + favoriteSongs.get(i)); // >:C
         }
 	}
 	

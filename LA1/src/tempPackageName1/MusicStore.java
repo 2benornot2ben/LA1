@@ -68,4 +68,9 @@ public class MusicStore {
 			myReader.close();
 		}
 	}
+	
+	
+	// Rating Songs goes here (Because people can rate stuff out of their library)
+	// Ability to give lists of songs/albums based on specificaitons (User can search for these via the MusicStore)
+	// Can also give non-copies of their albums/songs to Library (obviously)
 }
