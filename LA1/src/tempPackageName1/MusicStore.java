@@ -1,3 +1,6 @@
+/*
+ * Added 2 getters as we need them. Fixed some bugs.
+ */
 package tempPackageName1;
 
 import java.io.File;
@@ -15,8 +18,12 @@ public class MusicStore {
 	private ArrayList<Song> songs;
 
 	//constructor
-	public MusicStore(){
+	public MusicStore() throws FileNotFoundException{
 		this.fileNames = new ArrayList<String>();
+	    this.albums = new ArrayList<Album>();
+	    this.songs = new ArrayList<Song>();
+		creatingFileNames();
+		readingAlbums();
 	}
 	
 	//method for creating filenames from the content of the albums.txt
@@ -30,9 +37,6 @@ public class MusicStore {
 				fileNames.add(albumFile);
 			}
 			scanLine.close();
-			for(int i = 0; i < fileNames.size(); i++) {
-				System.out.println(fileNames.get(i));
-			}
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -69,6 +73,21 @@ public class MusicStore {
 		}
 	}
 	
+	public ArrayList<Song> getSongs(){
+		ArrayList<Song> copy = new ArrayList<Song>();
+	    for (Song song : songs) {
+	        copy.add(new Song(song));
+	    }
+	    return copy;
+	}
+	
+	public ArrayList<Album> getAlbums(){
+		ArrayList<Album> copy = new ArrayList<>();
+	    for (Album album: albums) {
+	        copy.add(new Album(album));
+	    }
+	    return copy;
+	}
 	
 	// Rating Songs goes here (Because people can rate stuff out of their library)
 	// Ability to give lists of songs/albums based on specificaitons (User can search for these via the MusicStore)
