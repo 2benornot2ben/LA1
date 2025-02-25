@@ -1,7 +1,33 @@
 package tempPackageName2;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
+/*
+ * LAST UPDATED 24 Feb, 11 p.m:
+ * I did searching from store and library, adding a song.
+ * I will finish everything tomorrow hopefully. 
+ * 
+ * 
+ * ATTENTION!!!
+ * I know there are a lot of duplicated code. I will edit them by adding helper methods.
+ * 
+ * AND:
+ * I did not use storages because I did not really understand its use.
+ * 
+ * 
+ * The methods are tested everything is working.
+ * 
+ * 
+ * 
+ * I updated most of the file. 
+ */
+
+
+
+
 
 import tempPackageName1.*; // New stuff here, hope I got this...
 
@@ -22,11 +48,13 @@ public class View {
 	private ArrayList<Song> songStorage = new ArrayList<Song>();
 	private ArrayList<Album> albumStorage = new ArrayList<Album>();
 	private ArrayList<PlayList> playListStorage = new ArrayList<PlayList>();
+	private LibraryModel myLibrary;
 	// We'll be reusing these 3 too. I hope this works.
 	Scanner getInput = new Scanner(System.in);
 	String holdInput = "";
 	String holdInputLower = "";
-	public View() {
+	public View() throws FileNotFoundException{
+		myLibrary = new LibraryModel();
 		boolean running = true;
 		while (running) {
 			// Whenever it gets reset to having NO current input, it gets reset here.
@@ -46,26 +74,214 @@ public class View {
 			holdInput = getInput.nextLine();
 			holdInputLower = holdInput.toLowerCase();
 			if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("musicstore")) {
-				// I unfortunately have to split these two because of playlists. Shame.
-				// Function...
-				// Ask what do you want to search by
-				// List out the 4 possible combinations (1-4)
-				// Ask for title/author according to what he chose
-				// Have it print using print list functions (Seriously, don't write it all out here)
-				System.out.println("DEBUG: Search MusicStore");
+				System.out.println("");
+				System.out.println("YOU CAN SEARCH FOR THE ...");
+				System.out.println("1. Song by title");
+				System.out.println("2. Song by artist");
+				System.out.println("3. Album by title");
+				System.out.println("4. Album by artist");
+				System.out.print("Enter the number of an option you want: ");
+				String searching = getInput.nextLine();
+				
+				//the code below uses duplicated code. We should write a separate function to escape duplicated codes.
+				// i will leave them as it is for now.
+				
+				if(searching.equals("1")) {
+					System.out.print("Please enter the title of the song: ");
+					String titleOfSong = getInput.nextLine();
+					ArrayList<Song> resultList = myLibrary.searchByTitleSong(titleOfSong, "musicstore");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + titleOfSong + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+						}
+					}
+				}else if(searching.equals("2")) {
+					System.out.print("Please enter the artist of the song: ");
+					String artistOfSong = getInput.nextLine();
+					ArrayList<Song> resultList = myLibrary.searchByArtistSong(artistOfSong, "musicstore");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + artistOfSong + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+						}
+					}
+				}
+				else if(searching.equals("3")) {
+					System.out.print("Please enter the title of the album: ");
+					String titleOfAlbum = getInput.nextLine();
+					ArrayList<Album> resultList = myLibrary.searchByTitleAlbum(titleOfAlbum, "musicstore");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + titleOfAlbum + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ") " +resultList.get(i).getAlbumName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getGenre() + " " + resultList.get(i).getYear());
+							for(int j = 0; j < resultList.get(i).getSongList().size(); j++) {
+								System.out.println((j+1) + ": " + resultList.get(i).getSongList().get(j).getSongName());
+							}
+						}
+					}
+				}
+				else if(searching.equals("4")) {
+					System.out.print("Please enter the artist of the album: ");
+					String artistOfAlbum = getInput.nextLine();
+					ArrayList<Album> resultList = myLibrary.searchByArtistAlbum(artistOfAlbum, "musicstore");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + artistOfAlbum + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ") " +resultList.get(i).getAlbumName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getGenre() + " " + resultList.get(i).getYear());
+							for(int j = 0; j < resultList.get(i).getSongList().size(); j++) {
+								System.out.println((j+1) + ": " + resultList.get(i).getSongList().get(j).getSongName());
+							}
+							System.out.println("");
+						}
+					}
+				}
+				
 			} else if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("library")) {
-				// Function...
-				System.out.println("DEBUG: Search Library/Playlist");
+				System.out.println("");
+				System.out.println("YOU CAN SEARCH FOR THE ...");
+				System.out.println("1. Song by title");
+				System.out.println("2. Song by artist");
+				System.out.println("3. Album by title");
+				System.out.println("4. Album by artist");
+				System.out.println("5. Playlist by name");
+				System.out.print("Enter the number of an option you want: ");
+				String searching = getInput.nextLine();
+				
+				//the code below uses duplicated code. We should write a separate function to escape duplicated codes.
+				// i will leave them as it is for now.
+				
+				if(searching.equals("1")) {
+					System.out.print("Please enter the title of the song: ");
+					String titleOfSong = getInput.nextLine();
+					ArrayList<Song> resultList = myLibrary.searchByTitleSong(titleOfSong, "library");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + titleOfSong + " is not in the library.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+						}
+					}
+				}else if(searching.equals("2")) {
+					System.out.print("Please enter the artist of the song: ");
+					String artistOfSong = getInput.nextLine();
+					ArrayList<Song> resultList = myLibrary.searchByArtistSong(artistOfSong, "library");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + artistOfSong + " is not in the library.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+						}
+					}
+				}
+				else if(searching.equals("3")) {
+					System.out.print("Please enter the title of the album: ");
+					String titleOfAlbum = getInput.nextLine();
+					ArrayList<Album> resultList = myLibrary.searchByTitleAlbum(titleOfAlbum, "library");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + titleOfAlbum + " is not in the library.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ") " +resultList.get(i).getAlbumName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getGenre() + " " + resultList.get(i).getYear());
+							for(int j = 0; j < resultList.get(i).getSongList().size(); j++) {
+								System.out.println((j+1) + ": " + resultList.get(i).getSongList().get(j).getSongName());
+							}
+						}
+					}
+				}
+				else if(searching.equals("4")) {
+					System.out.print("Please enter the artist of the album: ");
+					String artistOfAlbum = getInput.nextLine();
+					ArrayList<Album> resultList = myLibrary.searchByArtistAlbum(artistOfAlbum, "library");
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + artistOfAlbum + " is not in the library.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ") " +resultList.get(i).getAlbumName() + " " + 
+								resultList.get(i).getArtist() + " " + resultList.get(i).getGenre() + " " + resultList.get(i).getYear());
+							for(int j = 0; j < resultList.get(i).getSongList().size(); j++) {
+								System.out.println((j+1) + ": " + resultList.get(i).getSongList().get(j).getSongName());
+							}
+							System.out.println("");
+						}
+					}
+				}
+				else if(searching.equals("5")) {
+					System.out.print("Please enter the name of the playlist: ");
+					String nameOfPlayList = getInput.nextLine();
+					PlayList result = myLibrary.searchByNamePlayList(nameOfPlayList);
+					if (result.getPlayListName().equals("")) {
+						System.out.println("Sorry " + nameOfPlayList + " is not in the library.");
+					} else {
+						System.out.println("Search result: ");
+						System.out.println(result.getPlayListName());
+						for(int i = 0; i < result.getSongList().size(); i++) {
+							System.out.println((i+1) + ": " + result.getSongList().get(i).getSongName() 
+									+ " " + result.getSongList().get(i).getArtist());
+						}
+					}
+				}
 			} else if (holdInputLower.split(" ")[0].equals("add") && (holdInputLower.split(" ")[1].equals("album")
 					|| holdInputLower.split(" ")[1].equals("song"))) {
-				// Input validation. Next function will handle the split between the two types. I think...
-				// Function...
-				System.out.println("DEBUG: Add Album/Song");
-				// Then ask the user to type something to search BY
-				// (Probably the name)
-				// 1: Song1details
-				// 2: Song2details
-				// etc...
+				System.out.println("");
+//				System.out.println("YOU OPTIONS TO ADD TO THE LIBRARY: ");
+//				System.out.println("1. Song");
+//				System.out.println("1. Album");
+//				System.out.print("Enter the number of an option you want: ");
+				System.out.print("Enter a title of the " + holdInputLower.split(" ")[1] + " you want to add: ");
+				String title = getInput.nextLine();
+				System.out.print("Enter an artist of the " + holdInputLower.split(" ")[1] + " you want to add: ");
+				String artist = getInput.nextLine();
+				
+				
+				
+				//I guess we need to validate the input, idk
+				
+				if(holdInputLower.split(" ")[1].equals("song")) {
+					ArrayList<Song> songs = myLibrary.searchByTitleSong(title, "musicstore");
+					if(songs.size() == 0) {
+						System.out.println(title + " is not found in the store");
+					}
+					else {
+						boolean added = false;
+						for(int i = 0; i < songs.size(); i++) {
+							if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
+								
+								//i am not sure if this causes an escaping reference.
+								myLibrary.addSongToList(songs.get(i));
+								added = true;
+								break;
+							}
+						}
+						if(!added) {
+							System.out.println(title + " by " + artist + " is not found in the store");
+						}
+						else {
+							System.out.println(title + " by " + artist + " has been added to the library");
+						}
+					}
+				}
+				
+				
 			} else if (holdInputLower.split(" ")[0].equals("create") && holdInputLower.length() > 7
 					&& !(holdInputLower.substring(7).contains(" "))) {
 				// This will not allow you to make a playlist if there's a space anywhere in the name.
@@ -90,7 +306,7 @@ public class View {
 	
 	// Functions.
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException{
 		View bleh = new View();
 	}
 	
