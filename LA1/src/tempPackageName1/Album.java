@@ -17,6 +17,14 @@ public class Album {
 		this.songs = new ArrayList<Song>();
 	}
 	
+	public Album(Album album) {
+		this.albumName = album.getAlbumName();
+		this.artist = album.getArtist();
+		this.genre = album.getGenre();
+		this.year = album.getYear();
+		this.songs = album.getSongList();
+	}
+	
 	public void addSong(Song songInst) {
 		songs.add(songInst);
 	}
@@ -41,6 +49,10 @@ public class Album {
 	// This method might not be used.
 	// This now uses classes, so this really might not be used.
 	public ArrayList<Song> getSongList() {
-		return new ArrayList<Song>(songs);
+		ArrayList<Song> copy = new ArrayList<>();
+	    for (Song song : this.songs) {
+	        copy.add(new Song(song));
+	    }
+	    return copy;
 	}
 }
