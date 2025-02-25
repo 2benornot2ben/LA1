@@ -29,6 +29,10 @@ public class Song {
         this.rating = incomingSong.getRating();
 	}
 	
+	public String getPrintFormatted() {
+		return getSongName() + " " + getArtist() + " " + getAlbumName();
+	}
+	
 	public String getSongName() {
 		return songName;
 	}

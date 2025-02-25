@@ -22,6 +22,9 @@ public class LibraryModel{
 		this.database = new MusicStore();
 	}
 	
+	/*
+	 * These two methods should be retired. Keeping them around, just incase.
+	 * 
 	public ArrayList<Song> searchByTitleSong(String title, String category) {
 		ArrayList<Song> resultList = new ArrayList<Song>();
 		ArrayList<Song> songs;
@@ -35,7 +38,7 @@ public class LibraryModel{
 		}
 		
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase())) {
+			if(songs.get(i).getSongName().toLowerCase().contains(title.toLowerCase())) {
 				resultList.add(songs.get(i));
 			}
 		}
@@ -60,7 +63,36 @@ public class LibraryModel{
 		}
 		return resultList;
 	}
+	*/
 	
+	public ArrayList<Song> searchByIndicatorSong(String input, String category, String indicator) {
+		ArrayList<Song> resultList = new ArrayList<Song>();
+		ArrayList<Song> songs;
+		if (category.equals("musicstore")) {
+			songs = database.getSongs();
+		} else {
+			songs = new ArrayList<Song>();
+		    for (Song song : this.songList) {
+		        songs.add(new Song(song));
+		    }
+		}
+		for(int i = 0; i < songs.size(); i++) {
+			if (indicator.equals("title")) {
+				if (songs.get(i).getSongName().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(songs.get(i));
+				}
+			} else {
+				if (songs.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(songs.get(i));
+				}
+			}
+		}
+		return resultList;
+	}
+	
+	/*
+	 * Retired
+	 *
 	public ArrayList<Album> searchByTitleAlbum(String title, String category){
 		ArrayList<Album> resultList = new ArrayList<Album>();
 		ArrayList<Album> albums;
@@ -94,6 +126,32 @@ public class LibraryModel{
 		for(int i = 0; i < albums.size(); i++) {
 			if(albums.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
 				resultList.add(albums.get(i));
+			}
+		}
+		return resultList;
+	}
+	*/
+	
+	public ArrayList<Album> searchByIndicatorAlbum(String input, String category, String indicator) {
+		ArrayList<Album> resultList = new ArrayList<Album>();
+		ArrayList<Album> albums;
+		if (category.equals("musicstore")) {
+			albums = database.getAlbums();
+		} else {
+			albums = new ArrayList<Album>();
+		    for (Album album : this.albumList) {
+		        albums.add(new Album(album));
+		    }
+		}
+		for(int i = 0; i < albums.size(); i++) {
+			if (indicator.equals("title")) {
+				if (albums.get(i).getAlbumName().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(albums.get(i));
+				}
+			} else {
+				if (albums.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(albums.get(i));
+				}
 			}
 		}
 		return resultList;

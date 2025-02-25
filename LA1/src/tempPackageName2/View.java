@@ -73,7 +73,9 @@ public class View {
 			System.out.println("This is not case sensitive, but is spelling sensitive.");
 			holdInput = getInput.nextLine();
 			holdInputLower = holdInput.toLowerCase();
-			if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("musicstore")) {
+			if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ").length > 1 &&
+					holdInputLower.split(" ")[1].equals("musicstore") || holdInputLower.split(" ")[1].equals("library")) {
+				String locationHolder = holdInputLower.split(" ")[1];
 				System.out.println("");
 				System.out.println("YOU CAN SEARCH FOR THE ...");
 				System.out.println("1. Song by title");
@@ -86,6 +88,9 @@ public class View {
 				//the code below uses duplicated code. We should write a separate function to escape duplicated codes.
 				// i will leave them as it is for now.
 				
+				/*
+				 * These two methods should be retired. Keeping them around, just incase.
+				 * 
 				if(searching.equals("1")) {
 					System.out.print("Please enter the title of the song: ");
 					String titleOfSong = getInput.nextLine();
@@ -113,6 +118,27 @@ public class View {
 						}
 					}
 				}
+				*/
+				
+				if (searching.equals("1") || searching.equals("2")) {
+					String indicator = "";
+					if (searching.equals("1")) indicator = "title";
+					else indicator = "artist";
+					System.out.print("Please enter the " +  indicator + " of the song: ");
+					holdInput = getInput.nextLine();
+					ArrayList<Song> resultList = myLibrary.searchByIndicatorSong(holdInput, locationHolder, indicator);
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + holdInput + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ": " + resultList.get(i).getPrintFormatted());
+						}
+					}
+				}
+				/*
+				 * Retired?
+				 * 
 				else if(searching.equals("3")) {
 					System.out.print("Please enter the title of the album: ");
 					String titleOfAlbum = getInput.nextLine();
@@ -148,8 +174,33 @@ public class View {
 						}
 					}
 				}
-				
-			} else if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ")[1].equals("library")) {
+				*/
+				if (searching.equals("3") || searching.equals("4")) {
+					String indicator = "";
+					if (searching.equals("3")) indicator = "title";
+					else indicator = "artist";
+					System.out.print("Please enter the " +  indicator + " of the album: ");
+					holdInput = getInput.nextLine();
+					ArrayList<Album> resultList = myLibrary.searchByIndicatorAlbum(holdInput, locationHolder, indicator);
+					// Literally ALL OF BELOW is the same as song! Make method to remove duplicating!
+					if (resultList.size() == 0) {
+						System.out.println("Sorry " + indicator + " is not in the database.");
+					} else {
+						System.out.println("Search result: ");
+						for(int i = 0; i < resultList.size(); i++) {
+							System.out.println((i+1) + ") " + resultList.get(i).getPrintFormatted());
+							for(int j = 0; j < resultList.get(i).getSongList().size(); j++) {
+								System.out.println((j+1) + ": " + resultList.get(i).getSongList().get(j).getSongName());
+							}
+							System.out.println("");
+						}
+					}
+				}
+			/*
+			 * NUCLEAR DEVISTATION
+			 * 
+			} else if (holdInputLower.split(" ")[0].equals("search") && holdInputLower.split(" ").length > 1 && 
+					holdInputLower.split(" ")[1].equals("library")) {
 				System.out.println("");
 				System.out.println("YOU CAN SEARCH FOR THE ...");
 				System.out.println("1. Song by title");
@@ -172,8 +223,7 @@ public class View {
 					} else {
 						System.out.println("Search result: ");
 						for(int i = 0; i < resultList.size(); i++) {
-							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
-								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+							System.out.println((i+1) + ": " + resultList.get(i).getPrintFormatted());
 						}
 					}
 				}else if(searching.equals("2")) {
@@ -185,8 +235,7 @@ public class View {
 					} else {
 						System.out.println("Search result: ");
 						for(int i = 0; i < resultList.size(); i++) {
-							System.out.println((i+1) + ": " +resultList.get(i).getSongName() + " " + 
-								resultList.get(i).getArtist() + " " + resultList.get(i).getAlbumName());
+							System.out.println((i+1) + ": " + resultList.get(i).getPrintFormatted());
 						}
 					}
 				}
@@ -240,8 +289,9 @@ public class View {
 						}
 					}
 				}
-			} else if (holdInputLower.split(" ")[0].equals("add") && (holdInputLower.split(" ")[1].equals("album")
-					|| holdInputLower.split(" ")[1].equals("song"))) {
+				*/
+			} else if (holdInputLower.split(" ")[0].equals("add") && holdInputLower.split(" ").length > 1 && 
+					(holdInputLower.split(" ")[1].equals("album") || holdInputLower.split(" ")[1].equals("song"))) {
 				System.out.println("");
 //				System.out.println("YOU OPTIONS TO ADD TO THE LIBRARY: ");
 //				System.out.println("1. Song");
@@ -257,7 +307,8 @@ public class View {
 				//I guess we need to validate the input, idk
 				
 				if(holdInputLower.split(" ")[1].equals("song")) {
-					ArrayList<Song> songs = myLibrary.searchByTitleSong(title, "musicstore");
+					//ArrayList<Song> songs = myLibrary.searchByTitleSong(title, "musicstore");
+					ArrayList<Song> songs = new ArrayList<Song>(); // 
 					if(songs.size() == 0) {
 						System.out.println(title + " is not found in the store");
 					}
