@@ -1,26 +1,118 @@
 /*
- * LAST CHANGED ON FEB 22
- * COMMENTS for future changes: include methods for searching. Test the code using main. 
+ * LAST CHANGED ON FEB 24
+ * COMMENTS for future changes: change the methods according to the view. Test the code. 
  */
 
 package tempPackageName1;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class LibraryModel {
+public class LibraryModel{
 	private ArrayList<Song> songList;
 	private ArrayList<Album> albumList;
 	private ArrayList<PlayList> playListList;
 	private ArrayList<String> artistList;
-	public LibraryModel() {
+	private MusicStore database;
+	public LibraryModel() throws FileNotFoundException{
 		this.songList = new ArrayList<Song>();
 		this.albumList = new ArrayList<Album>();
 		this.playListList = new ArrayList<PlayList>();
 		this.artistList = new ArrayList<String>();
+		this.database = new MusicStore();
 	}
 	
-	public void addSongToList(String title, String artist, String albumName, String genre, String year) {
-		songList.add(new Song(title, artist, albumName, genre, year)); // >:C
+	public ArrayList<Song> searchByTitleSong(String title, String category) {
+		ArrayList<Song> resultList = new ArrayList<Song>();
+		ArrayList<Song> songs;
+		if(category.equals("musicstore")) {
+			songs = database.getSongs();
+		}else {
+			songs = new ArrayList<Song>();
+		    for (Song song : this.songList) {
+		        songs.add(new Song(song));
+		    }
+		}
+		
+		for(int i = 0; i < songs.size(); i++) {
+			if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase())) {
+				resultList.add(songs.get(i));
+			}
+		}
+		return resultList;
+	}
+	
+	public ArrayList<Song> searchByArtistSong(String artist, String category){
+		ArrayList<Song> resultList = new ArrayList<Song>();
+		ArrayList<Song> songs;
+		if(category.equals("musicstore")) {
+			songs = database.getSongs();
+		}else {
+			songs = new ArrayList<Song>();
+		    for (Song song : this.songList) {
+		        songs.add(new Song(song));
+		    }
+		}
+		for(int i = 0; i < songs.size(); i++) {
+			if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
+				resultList.add(songs.get(i));
+			}
+		}
+		return resultList;
+	}
+	
+	public ArrayList<Album> searchByTitleAlbum(String title, String category){
+		ArrayList<Album> resultList = new ArrayList<Album>();
+		ArrayList<Album> albums;
+		if(category.equals("musicstore")) {
+			albums = database.getAlbums();
+		}else {
+			albums = new ArrayList<Album>();
+		    for (Album album : this.albumList) {
+		        albums.add(new Album(album));
+		    }
+		}
+		for(int i = 0; i < albums.size(); i++) {
+			if(albums.get(i).getAlbumName().toLowerCase().equals(title.toLowerCase())) {
+				resultList.add(albums.get(i));
+			}
+		}
+		return resultList;
+	}
+	
+	public ArrayList<Album> searchByArtistAlbum(String artist, String category){
+		ArrayList<Album> resultList = new ArrayList<Album>();
+		ArrayList<Album> albums;
+		if(category.equals("musicstore")) {
+			albums = database.getAlbums();
+		}else {
+			albums = new ArrayList<Album>();
+		    for (Album album : this.albumList) {
+		        albums.add(new Album(album));
+		    }
+		}
+		for(int i = 0; i < albums.size(); i++) {
+			if(albums.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
+				resultList.add(albums.get(i));
+			}
+		}
+		return resultList;
+	}
+	
+	public PlayList searchByNamePlayList(String name) {
+		PlayList result = new PlayList("");
+		for(int i = 0; i < playListList.size(); i++) {
+			if(playListList.get(i).getPlayListName().toLowerCase().equals(name.toLowerCase())) {
+				result = new PlayList(playListList.get(i));
+				break;
+			}
+		}
+		return result;
+	}
+	
+	
+	public void addSongToList(Song song) {
+		songList.add(new Song(song));
     }
 	
 	public void addAlbumToList(String title, String artist, String genre, String year) {
