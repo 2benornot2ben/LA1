@@ -11,6 +11,11 @@ public class PlayList {
 		this.songs = new ArrayList<Song>();
 	}
 	
+	public PlayList(PlayList playlist) {
+		this.playListName = playlist.getPlayListName();
+		this.songs = playlist.getSongList();
+	}
+	
 	public void addSong(Song songInst) {
 		songs.add(songInst);
 	}
@@ -32,7 +37,11 @@ public class PlayList {
 	// This method might not be used.
 	// This now uses classes, so this really might not be used.
 	public ArrayList<Song> getSongList() {
-		return new ArrayList<Song>(songs);
+		ArrayList<Song> copy = new ArrayList<Song>();
+	    for (Song song : songs) {
+	        copy.add(new Song(song));
+	    }
+	    return copy;
 	}
 	
 	// We may need this to handle getting a specific song.
