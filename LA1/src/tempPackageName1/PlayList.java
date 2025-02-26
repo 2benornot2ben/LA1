@@ -22,16 +22,25 @@ public class PlayList {
 
 	public boolean canAddSongToList(Song song) {
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().equals(song.getSongName()) && songs.get(i).getArtist().equals(song.getArtist())) {
+			if(songs.get(i).getSongName().toLowerCase().equals(song.getSongName()) && songs.get(i).getArtist().toLowerCase().equals(song.getArtist())) {
 				return false;
 			}
 		}
 		return true;
 	}
-    // added remove song 
-	public void removeSong(Song songInst){
+    
+	public boolean canRemoveSong(String title, String artist) {
+		for(int i = 0; i < songs.size(); i++){
+            if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())){
+                return true;
+            }
+        }
+		return false;
+	}
+	
+	public void removeSong(String title, String artist){
         for(int i = 0; i < songs.size(); i++){
-            if(songs.get(i).getSongName().equals(songInst.getSongName())){
+            if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())){
                 songs.remove(i);
                 break;
             }
