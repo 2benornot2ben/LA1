@@ -20,6 +20,14 @@ public class PlayList {
 		songs.add(songInst);
 	}
 
+	public boolean canAddSongToList(Song song) {
+		for(int i = 0; i < songs.size(); i++) {
+			if(songs.get(i).getSongName().equals(song.getSongName()) && songs.get(i).getArtist().equals(song.getArtist())) {
+				return false;
+			}
+		}
+		return true;
+	}
     // added remove song 
 	public void removeSong(Song songInst){
         for(int i = 0; i < songs.size(); i++){
