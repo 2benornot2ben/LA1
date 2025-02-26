@@ -275,16 +275,22 @@ public class View {
 								System.out.println(title + " is not found in the store");
 							}else {
 								boolean added = false;
+								boolean exist = false;
 								for(int i = 0; i < songs.size(); i++) {
 									if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
 										added = myLibrary.addSongToPlaylist(playlistName, songs.get(i));
+										exist = true;
 									}
 								}
-								if(added) {
-									System.out.println(title + " by " + artist + " has been added to " + playlistName);
-								}
-								else {
-									System.out.println(title + " by " + artist + " is already in " + playlistName);
+								if(exist) {
+									if(added) {
+										System.out.println(title + " by " + artist + " has been added to " + playlistName);
+									}
+									else {
+										System.out.println(title + " by " + artist + " is already in " + playlistName);
+									}
+								} else {
+									System.out.println(title + " by " + artist + " is not in the store");
 								}
 							}
 							
@@ -295,9 +301,53 @@ public class View {
 			        }
 				}	
 			} else if (holdInputLower.split(" ")[0].equals("removep")) {
-				// This will not allow you to search for nothing. Sorry. (Unless you consider spaces as "nothing")
-				//rateSong(holdInputLower.split(" ")[1]);
-				System.out.println("DEBUG: Rate Song");
+				System.out.println("");
+				ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();
+				if(playlists.size() == 0) {
+					System.out.println("No playlists in the library");
+				} else {
+					System.out.println("SELECT A PLAYLIST FROM WHERE YOU WANT TO REMOVE A SONG...");
+					for(int i = 0; i < playlists.size(); i++) {
+						System.out.println((i+1) + ". " + playlists.get(i));
+					}
+					System.out.println("Enter a number of a playlist where you want to remove: ");
+					String number = getInput.nextLine();
+					if(isNumeric(number)) {
+			        	int num = Integer.parseInt(number);
+			        	if (!(num > 0 && num <= playlists.size())) {
+			        		System.out.println("Your input is invalid");
+			        	}
+			        	else {
+			        		System.out.print("Enter a title of the song you want to remove from a playlist: ");
+			        		String title = getInput.nextLine();
+							System.out.print("Enter an artist of the song you want to remove to a playlist: ");
+							String artist = getInput.nextLine();
+							String playlistName = playlists.get(num-1);
+							boolean removed = false;
+							boolean exist = false;
+							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+							for(int i = 0; i < songs.size(); i++) {
+								if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
+									exist = true;
+								}
+							}
+							removed = myLibrary.removeSongFromPlaylist(playlistName, title, artist);
+							if(exist) {
+								if(removed) {
+									System.out.println(title + " by " + artist + " has been removed from " + playlistName);
+								}
+								else {
+									System.out.println(title + " by " + artist + " is not in " + playlistName);
+								}
+							} else {
+								System.out.println(title + " by " + artist + " is not in the store");
+							}
+						}
+			        }
+					else {
+			        	System.out.println("Your input is invalid");
+			        }
+				}
 			} else if (holdInputLower.split(" ")[0].equals("exit")) {
 				// Kills the program
 				running = false;
