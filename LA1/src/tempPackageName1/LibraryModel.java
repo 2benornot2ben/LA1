@@ -1,6 +1,7 @@
 /*
- * LAST CHANGED ON FEB 24
+ * LAST CHANGED ON FEB 25
  * COMMENTS for future changes: change the methods according to the view. Test the code. 
+ * fix duplicated codes.
  */
 
 package tempPackageName1;
@@ -35,7 +36,7 @@ public class LibraryModel{
 		}
 		
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase())) {
+			if(songs.get(i).getSongName().toLowerCase().contains(title.toLowerCase())) {
 				resultList.add(songs.get(i));
 			}
 		}
@@ -111,48 +112,80 @@ public class LibraryModel{
 	}
 	
 	
+	public boolean canAddSongToList(Song song) {
+		for(int i = 0; i < songList.size(); i++) {
+			if(songList.get(i).getSongName().equals(song.getSongName()) && songList.get(i).getArtist().equals(song.getArtist())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean canAddAlbumToList(Album album) {
+		for(int i = 0; i < albumList.size(); i++) {
+			if(albumList.get(i).getAlbumName().equals(album.getAlbumName()) && albumList.get(i).getArtist().equals(album.getArtist())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public void addSongToList(Song song) {
 		songList.add(new Song(song));
+		if(!artistList.contains(song.getArtist())){
+			artistList.add(song.getArtist());
+		}
     }
 	
-	public void addAlbumToList(String title, String artist, String genre, String year) {
-		albumList.add(new Album(title, artist, genre, year)); // >:CCCCCCCCCCCCCCCCCCCCCCCCCCc
+	public void addAlbumToList(Album album) {
+		albumList.add(new Album(album));
+		for (Song song : album.getSongList()) {
+	        if (!songList.contains(song)) {
+	            songList.add(song);
+	        }
+	    }
+		if(!artistList.contains(album.getArtist())){
+			artistList.add(album.getArtist());
+		}
+		
 	}
 	
-	public void printLibrarySongList() {
+	public ArrayList<String> getLibrarySongList() {
+		ArrayList<String> list = new ArrayList<String>();
 		for(int i = 0; i < this.songList.size(); i++){
-            System.out.println((i + 1) + " " + songList.get(i).getSongName());
+            list.add(songList.get(i).getSongName());
         }
+		return list;
 	}
 	
-	public void printLibraryArtistList() {
-		for(int i = 0; i < this.artistList.size(); i++){
-            System.out.println((i + 1) + " " + artistList.get(i));
-        }
+	public ArrayList<String> getLibraryArtistList(){
+		return artistList;
 	}
 	
-	public void printLibraryAlbumList() {
+	public ArrayList<String> getLibraryAlbumList(){
+		ArrayList<String> list = new ArrayList<String>();
 		for(int i = 0; i < this.albumList.size(); i++){
-            System.out.println((i + 1) + " " + albumList.get(i).getAlbumName());
+            list.add(albumList.get(i).getAlbumName());
         }
+		return list;
 	}
 	
-	public void printLibraryPlayLists() {
+	public ArrayList<String> getLibraryPlaylistList(){
+		ArrayList<String> list = new ArrayList<String>();
 		for(int i = 0; i < this.playListList.size(); i++){
-            System.out.println((i + 1) + " " + playListList.get(i).getPlayListName());
+            list.add(playListList.get(i).getPlayListName());
         }
+		return list;
 	}
 	
-	public void printLibraryFavoriteSongs() {
+	public ArrayList<String> getLibraryFavoriteSongs() {
         ArrayList<String> favoriteSongs = new ArrayList<String>();
 		for(int i = 0; i < this.songList.size(); i++){
             if(songList.get(i).getFavorited() == true){
                 favoriteSongs.add(songList.get(i).getSongName());
             }
         }
-        for(int i = 0; i < favoriteSongs.size(); i++){
-            System.out.println((i + 1) + " " + favoriteSongs.get(i)); // >:C
-        }
+        return favoriteSongs;
 	}
 	
 	public void addPlayList(String name) {
