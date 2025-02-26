@@ -98,6 +98,19 @@ public class LibraryModel{
 		return false;
 	}
 	
+	public boolean removeSongFromPlaylist(String playlistName, String title, String artist) {
+		for(int i = 0; i < playListList.size(); i ++) {
+			if(playListList.get(i).getPlayListName().toLowerCase().equals(playlistName.toLowerCase())) {
+				boolean canRemove = playListList.get(i).canRemoveSong(title, artist);
+				if(canRemove) {
+					playListList.get(i).removeSong(title, artist);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean canAddSongToList(Song song) {
 		for(int i = 0; i < songList.size(); i++) {
 			if(songList.get(i).getSongName().equals(song.getSongName()) && songList.get(i).getArtist().equals(song.getArtist())) {
@@ -184,24 +197,6 @@ public class LibraryModel{
 		return true;
 	}
 	
-    //added playListName because we should know to which playlist we should add a song
-	public void addToPlayList(Song songInst, String playListName) {
-		//i dont know if we should to validation for playListName
-        for(int i = 0; i < playListList.size(); i++){
-            if(playListList.get(i).getPlayListName().equals(playListName)){
-                playListList.get(i).addSong(songInst);
-            }
-        }
-	}
-
-    public void removeFromPlayList(Song songInst, String playListName){
-        for(int i = 0; i < playListList.size(); i++){
-            if(playListList.get(i).getPlayListName().equals(playListName)){
-                playListList.get(i).removeSong(songInst);
-            }
-        }
-    }
-
     // song names might be similar so we need to check other attributes like artist name ig.
     // i dont know.
     public void markSongAsFavorite(Song songInst){
