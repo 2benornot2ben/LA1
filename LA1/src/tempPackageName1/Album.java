@@ -29,6 +29,10 @@ public class Album {
 		songs.add(songInst);
 	}
 	
+	public String getPrintFormatted() {
+		return getAlbumName() + " " + getArtist() + " " + getGenre() + " " + getYear();
+	}
+	
 	public String getAlbumName() {
 		return albumName;
 	}
