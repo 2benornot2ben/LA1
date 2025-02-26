@@ -57,21 +57,33 @@ public class Song {
 		return favorited;
 	}
 	
-	public void setRating(int n) {
+	protected void setRating(int n) {
 		if (n < 1) n = 1;
 		if (n > 5) n = 5;
 		if (n == 5) favorited = true;
 		this.rating = n;
 	}
 	
-	public void favorite() {
+	protected void favorite() {
 		favorited = true;
 	}
 	
 	// Feels a bit weird splitting it up like this,
 	// but it's probably more useful like this.
-	public void unfavorite() {
+	protected void unfavorite() {
 		favorited = false;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Song song = (Song) obj;
+	    return songName.equals(song.songName) &&
+	           artist.equals(song.artist) &&
+	           albumName.equals(song.albumName) &&
+	           genre.equals(song.genre) &&
+	           year.equals(song.year);
 	}
 	
 	
