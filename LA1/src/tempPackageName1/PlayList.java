@@ -28,7 +28,7 @@ public class PlayList {
 		}
 		return true;
 	}
-    
+
 	public boolean canRemoveSong(String title, String artist) {
 		for(int i = 0; i < songs.size(); i++){
             if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())){
@@ -38,9 +38,10 @@ public class PlayList {
 		return false;
 	}
 	
+	// added remove song
 	public void removeSong(String title, String artist){
         for(int i = 0; i < songs.size(); i++){
-            if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())){
+        	if(songs.get(i).getSongName().toLowerCase().equals(title.toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())){
                 songs.remove(i);
                 break;
             }

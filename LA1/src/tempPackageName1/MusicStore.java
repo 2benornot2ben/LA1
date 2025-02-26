@@ -89,6 +89,20 @@ public class MusicStore {
 	    return copy;
 	}
 	
+	protected Song returnAuthenticSong(Song song) {
+		for (Song songInst: songs) {
+			if (song.equals(songInst)) return songInst;
+		}
+		throw new IllegalArgumentException("How did this even happen?");
+	}
+	
+	protected Album returnAuthenticAlbum(Album album) {
+		for (Album albumInst: albums) {
+			if (album.equals(albumInst)) return albumInst;
+		}
+		throw new IllegalArgumentException("How did this even happen?");
+	}
+	
 	// Rating Songs goes here (Because people can rate stuff out of their library)
 	// Ability to give lists of songs/albums based on specificaitons (User can search for these via the MusicStore)
 	// Can also give non-copies of their albums/songs to Library (obviously)

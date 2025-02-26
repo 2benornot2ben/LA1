@@ -105,7 +105,7 @@ public class View {
 					else indicator = "artist";
 					System.out.print("Please enter the " +  indicator + " of the song: ");
 					holdInput = getInput.nextLine();
-					ArrayList<Song> resultList = myLibrary.searchByIndicatorSong(holdInput, locationHolder, indicator);
+					ArrayList<Song> resultList = myLibrary.searchByIndicatorSong(holdInput, locationHolder, indicator, false);
 					if (resultList.size() == 0) {
 						System.out.println("Sorry " + holdInput + " is not in the database.");
 					} else {
@@ -122,7 +122,7 @@ public class View {
 					else indicator = "artist";
 					System.out.print("Please enter the " +  indicator + " of the album: ");
 					holdInput = getInput.nextLine();
-					ArrayList<Album> resultList = myLibrary.searchByIndicatorAlbum(holdInput, locationHolder, indicator);
+					ArrayList<Album> resultList = myLibrary.searchByIndicatorAlbum(holdInput, locationHolder, indicator, false);
 					// Literally ALL OF BELOW is the same as song! Make method to remove duplicating!
 					if (resultList.size() == 0) {
 						System.out.println("Sorry " + indicator + " is not in the database.");
@@ -169,7 +169,6 @@ public class View {
 				} else if (holdInputLower.split(" ")[1].equals("album")){
 					addAlbum_Function(title, artist);
 				}
-				// ---------------------------------------------------------------------------------------- (Remove after done w/ function 2) (TOP)
 			} else if (holdInputLower.split(" ")[0].equals("get")) {
 				System.out.println("");
 				System.out.println("YOU CAN GET A LIST OF ...");
@@ -230,9 +229,9 @@ public class View {
 					System.out.println("Wrong input");
 				}
 				
-				// ---------------------------------------------------------------------------------------- (Remove after done w/ function 2) (BOTTOM)
 			} else if (holdInputLower.split(" ")[0].equals("create") && holdInputLower.length() > 7
 					&& !(holdInputLower.substring(7).contains(" "))) {
+				// Note: If you want spaces, be sure to edit the line above & below.
 				String name = holdInputLower.split(" ")[1];
 				boolean added = myLibrary.addPlayList(name);
 				if(added) {
@@ -241,12 +240,12 @@ public class View {
 					System.out.println("The playlist " + name + " is already in the library.");
 				}
 				
-				
-				
 			} else if (holdInputLower.split(" ")[0].equals("rate") && holdInputLower.length() > 5) {
 				// This will not allow you to search for nothing. Sorry. (Unless you consider spaces as "nothing")
 				//rateSong(holdInputLower.split(" ")[1]);
 				System.out.println("DEBUG: Rate Song");
+				
+			// addp changing --------------------------------------------------------------- remove when done
 			} else if (holdInputLower.split(" ")[0].equals("addp")) {
 				System.out.println("");
 				ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();
@@ -259,7 +258,7 @@ public class View {
 					}
 					System.out.println("Enter a number of a playlist where you want to add: ");
 					String number = getInput.nextLine();
-			        if(isNumeric(number)) {
+					if(isNumeric(number)) {
 			        	int num = Integer.parseInt(number);
 			        	if (!(num > 0 && num <= playlists.size())) {
 			        		System.out.println("Your input is invalid");
@@ -270,7 +269,7 @@ public class View {
 							System.out.print("Enter an artist of the song you want to add to a playlist: ");
 							String artist = getInput.nextLine();
 							String playlistName = playlists.get(num-1);
-							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 							if(songs.size() == 0) {
 								System.out.println(title + " is not found in the store");
 							}else {
@@ -300,6 +299,7 @@ public class View {
 			        	System.out.println("Your input is invalid");
 			        }
 				}	
+				// addp changing --------------------------------------------------------------- remove when done
 			} else if (holdInputLower.split(" ")[0].equals("removep")) {
 				System.out.println("");
 				ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();
@@ -325,7 +325,7 @@ public class View {
 							String playlistName = playlists.get(num-1);
 							boolean removed = false;
 							boolean exist = false;
-							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 							for(int i = 0; i < songs.size(); i++) {
 								if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
 									exist = true;
@@ -393,7 +393,7 @@ public class View {
 	
 	// Specific Functions
 	private void addSong_Function(String title, String artist) {
-		ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+		ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", false);
 		if(songs.size() == 0) {
 			System.out.println(title + " is not found in the store");
 		}else {
@@ -415,7 +415,7 @@ public class View {
 	}
 	
 	private void addAlbum_Function(String title, String artist) {
-		ArrayList<Album> albums = myLibrary.searchByIndicatorAlbum(title, "musicstore", "title");
+		ArrayList<Album> albums = myLibrary.searchByIndicatorAlbum(title, "musicstore", "title", false);
 		if(albums.size() == 0) {
 			System.out.println(title + " is not found in the store");
 		}else {

@@ -25,8 +25,12 @@ public class Album {
 		this.songs = album.getSongList();
 	}
 	
-	public void addSong(Song songInst) {
+	protected void addSong(Song songInst) {
 		songs.add(songInst);
+	}
+	
+	public String getPrintFormatted() {
+		return getAlbumName() + " " + getArtist() + " " + getGenre() + " " + getYear();
 	}
 	
 	public String getAlbumName() {
@@ -54,5 +58,16 @@ public class Album {
 	        copy.add(new Song(song));
 	    }
 	    return copy;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Album album = (Album) obj;
+	    return year.equals(album.year) &&
+	           artist.equals(album.artist) &&
+	           albumName.equals(album.albumName) &&
+	           genre.equals(album.genre);
 	}
 }
