@@ -1,7 +1,6 @@
 /*
- * LAST CHANGED ON FEB 25
+ * LAST CHANGED ON FEB 24
  * COMMENTS for future changes: change the methods according to the view. Test the code. 
- * fix duplicated codes.
  */
 
 package tempPackageName1;
@@ -23,78 +22,51 @@ public class LibraryModel{
 		this.database = new MusicStore();
 	}
 	
-	public ArrayList<Song> searchByTitleSong(String title, String category) {
+	public ArrayList<Song> searchByIndicatorSong(String input, String category, String indicator) {
 		ArrayList<Song> resultList = new ArrayList<Song>();
 		ArrayList<Song> songs;
-		if(category.equals("musicstore")) {
+		if (category.equals("musicstore")) {
 			songs = database.getSongs();
-		}else {
-			songs = new ArrayList<Song>();
-		    for (Song song : this.songList) {
-		        songs.add(new Song(song));
-		    }
-		}
-		
-		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().toLowerCase().contains(title.toLowerCase())) {
-				resultList.add(songs.get(i));
-			}
-		}
-		return resultList;
-	}
-	
-	public ArrayList<Song> searchByArtistSong(String artist, String category){
-		ArrayList<Song> resultList = new ArrayList<Song>();
-		ArrayList<Song> songs;
-		if(category.equals("musicstore")) {
-			songs = database.getSongs();
-		}else {
+		} else {
 			songs = new ArrayList<Song>();
 		    for (Song song : this.songList) {
 		        songs.add(new Song(song));
 		    }
 		}
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
-				resultList.add(songs.get(i));
+			if (indicator.equals("title")) {
+				if (songs.get(i).getSongName().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(songs.get(i));
+				}
+			} else {
+				if (songs.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(songs.get(i));
+				}
 			}
 		}
 		return resultList;
 	}
 	
-	public ArrayList<Album> searchByTitleAlbum(String title, String category){
+	public ArrayList<Album> searchByIndicatorAlbum(String input, String category, String indicator) {
 		ArrayList<Album> resultList = new ArrayList<Album>();
 		ArrayList<Album> albums;
-		if(category.equals("musicstore")) {
+		if (category.equals("musicstore")) {
 			albums = database.getAlbums();
-		}else {
+		} else {
 			albums = new ArrayList<Album>();
 		    for (Album album : this.albumList) {
 		        albums.add(new Album(album));
 		    }
 		}
 		for(int i = 0; i < albums.size(); i++) {
-			if(albums.get(i).getAlbumName().toLowerCase().equals(title.toLowerCase())) {
-				resultList.add(albums.get(i));
-			}
-		}
-		return resultList;
-	}
-	
-	public ArrayList<Album> searchByArtistAlbum(String artist, String category){
-		ArrayList<Album> resultList = new ArrayList<Album>();
-		ArrayList<Album> albums;
-		if(category.equals("musicstore")) {
-			albums = database.getAlbums();
-		}else {
-			albums = new ArrayList<Album>();
-		    for (Album album : this.albumList) {
-		        albums.add(new Album(album));
-		    }
-		}
-		for(int i = 0; i < albums.size(); i++) {
-			if(albums.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
-				resultList.add(albums.get(i));
+			if (indicator.equals("title")) {
+				if (albums.get(i).getAlbumName().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(albums.get(i));
+				}
+			} else {
+				if (albums.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+					resultList.add(albums.get(i));
+				}
 			}
 		}
 		return resultList;
@@ -111,6 +83,33 @@ public class LibraryModel{
 		return result;
 	}
 	
+	public boolean addSongToPlaylist(String playlistName, Song song) {
+		for(int i = 0; i < playListList.size(); i++) {
+			if(playListList.get(i).getPlayListName().toLowerCase().equals(playlistName.toLowerCase())) {
+				if(playListList.get(i).canAddSongToList(song)) {
+					playListList.get(i).addSong(song);
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean removeSongFromPlaylist(String playlistName, String title, String artist) {
+		for(int i = 0; i < playListList.size(); i ++) {
+			if(playListList.get(i).getPlayListName().toLowerCase().equals(playlistName.toLowerCase())) {
+				boolean canRemove = playListList.get(i).canRemoveSong(title, artist);
+				if(canRemove) {
+					playListList.get(i).removeSong(title, artist);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	public boolean canAddSongToList(Song song) {
 		for(int i = 0; i < songList.size(); i++) {
@@ -188,43 +187,43 @@ public class LibraryModel{
         return favoriteSongs;
 	}
 	
-	public void addPlayList(String name) {
+	public boolean addPlayList(String name) {
+		for(int i = 0; i < playListList.size(); i++) {
+			if(playListList.get(i).getPlayListName().toLowerCase().equals(name.toLowerCase())) {
+				return false;
+			}
+		}
 		playListList.add(new PlayList(name));
+		return true;
 	}
 	
-    //added playListName because we should know to which playlist we should add a song
-	public void addToPlayList(Song songInst, String playListName) {
-		//i dont know if we should to validation for playListName
-        for(int i = 0; i < playListList.size(); i++){
-            if(playListList.get(i).getPlayListName().equals(playListName)){
-                playListList.get(i).addSong(songInst);
-            }
-        }
-	}
-
-    public void removeFromPlayList(Song songInst, String playListName){
-        for(int i = 0; i < playListList.size(); i++){
-            if(playListList.get(i).getPlayListName().equals(playListName)){
-                playListList.get(i).removeSong(songInst);
-            }
-        }
-    }
-
     // song names might be similar so we need to check other attributes like artist name ig.
     // i dont know.
-    public void markSongAsFavorite(Song songInst){
+    public boolean markSongAsFavorite(Song songInst){
         for(int i = 0; i < songList.size(); i++){
             if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).favorite();
+            	if(!songList.get(i).getFavorited()) {
+            		songList.get(i).favorite();
+            		
+                    return true;
+            	} else {
+            		return false;
+            	}
             }
         }
+        return false;
     }
 
     public void rateSong(Song songInst, int rating){
-        for(int i = 0; i < songList.size(); i++){
-            if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).setRating(rating);
-            }
+        database.rateSong(songInst, rating);
+        for(int i = 0; i < songList.size(); i++) {
+        	if(songList.get(i).equals(songInst)) {
+        		songList.get(i).setRating(rating);
+        		if(rating == 5) {
+        			songList.get(i).favorite();
+                }
+        	}
         }
+        
     }
 }
