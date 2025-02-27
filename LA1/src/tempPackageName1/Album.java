@@ -25,8 +25,12 @@ public class Album {
 		this.songs = album.getSongList();
 	}
 	
-	public void addSong(Song songInst) {
+	protected void addSong(Song songInst) {
 		songs.add(songInst);
+	}
+	
+	public String getPrintFormatted() {
+		return getAlbumName() + " " + getArtist() + " " + getGenre() + " " + getYear();
 	}
 	
 	public String getAlbumName() {
