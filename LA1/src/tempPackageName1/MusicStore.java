@@ -88,6 +88,7 @@ public class MusicStore {
 	    }
 	    return copy;
 	}
+	
 	public void rateSong(Song song, int rating) {
 		for(int i = 0; i < songs.size(); i++) {
 			if(songs.get(i).equals(song)) {

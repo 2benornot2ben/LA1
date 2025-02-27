@@ -92,7 +92,7 @@ public class View {
 					else indicator = "artist";
 					System.out.print("Please enter the " +  indicator + " of the song: ");
 					holdInput = getInput.nextLine();
-					ArrayList<Song> resultList = myLibrary.searchByIndicatorSong(holdInput, locationHolder, indicator);
+					ArrayList<Song> resultList = myLibrary.searchByIndicatorSong(holdInput, locationHolder, indicator, false);
 					if (resultList.size() == 0) {
 						System.out.println("Sorry " + holdInput + " is not in the database.");
 					} else {
@@ -109,7 +109,7 @@ public class View {
 					else indicator = "artist";
 					System.out.print("Please enter the " +  indicator + " of the album: ");
 					holdInput = getInput.nextLine();
-					ArrayList<Album> resultList = myLibrary.searchByIndicatorAlbum(holdInput, locationHolder, indicator);
+					ArrayList<Album> resultList = myLibrary.searchByIndicatorAlbum(holdInput, locationHolder, indicator, false);
 					// Literally ALL OF BELOW is the same as song! Make method to remove duplicating!
 					if (resultList.size() == 0) {
 						System.out.println("Sorry " + indicator + " is not in the database.");
@@ -143,8 +143,8 @@ public class View {
 					System.out.println("Invalid number");
 				}
 			
-			} else if (holdInputLower.split(" ")[0].equals("add") && (holdInputLower.split(" ")[1].equals("album")
-					|| holdInputLower.split(" ")[1].equals("song"))) {
+			} else if (holdInputLower.split(" ")[0].equals("add") && holdInputLower.split(" ").length > 1 &&
+					(holdInputLower.split(" ")[1].equals("album") || holdInputLower.split(" ")[1].equals("song"))) {
 				System.out.println("");
 				System.out.print("Enter a title of the " + holdInputLower.split(" ")[1] + " you want to add: ");
 				String title = getInput.nextLine();
@@ -156,7 +156,6 @@ public class View {
 				} else if (holdInputLower.split(" ")[1].equals("album")){
 					addAlbum_Function(title, artist);
 				}
-				// ---------------------------------------------------------------------------------------- (Remove after done w/ function 2) (TOP)
 			} else if (holdInputLower.split(" ")[0].equals("get")) {
 				System.out.println("");
 				System.out.println("YOU CAN GET A LIST OF ...");
@@ -169,55 +168,29 @@ public class View {
 				String option = getInput.nextLine();
 				if(option.equals("1")) {
 					ArrayList<String> songNames = myLibrary.getLibrarySongList();
-					if(songNames.size() == 0) {
-						System.out.println("No songs in the library");
-					} else {
-						for(int i = 0; i < songNames.size(); i++) {
-							System.out.println((i+1) + ". " +songNames.get(i));
-						}
-					}
+					if(songNames.size() == 0) System.out.println("No songs in the library");
+					else getPrintText(songNames);
 				} else if(option.equals("2")) {
 					ArrayList<String> artists = myLibrary.getLibraryArtistList();
-					if(artists.size() == 0) {
-						System.out.println("No artists in the library");
-					} else {
-						for(int i = 0; i < artists.size(); i++) {
-							System.out.println((i+1) + ". " + artists.get(i));
-						}
-					}
+					if(artists.size() == 0) System.out.println("No artists in the library");
+					else getPrintText(artists);
 				} else if(option.equals("3")) {
 					ArrayList<String> albums = myLibrary.getLibraryAlbumList();
-					if(albums.size() == 0) {
-						System.out.println("No albums in the library");
-					} else {
-						for(int i = 0; i < albums.size(); i++) {
-							System.out.println((i+1) + ". " + albums.get(i));
-						}
-					}
+					if (albums.size() == 0) System.out.println("No albums in the library");
+					else getPrintText(albums);
 				} else if(option.equals("4")) {
-					ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();
-					if(playlists.size() == 0) {
-						System.out.println("No playlists in the library");
-					} else {
-						for(int i = 0; i < playlists.size(); i++) {
-							System.out.println((i+1) + ". " + playlists.get(i));
-						}
-					}
+					ArrayList<String> playLists = myLibrary.getLibraryPlaylistList();
+					if(playLists.size() == 0) System.out.println("No playlists in the library");
+					else getPrintText(playLists);
 				} else if(option.equals("5")) {
 					ArrayList<String> favorite = myLibrary.getLibraryFavoriteSongs();
-					if(favorite.size() == 0) {
-						System.out.println("No favorite songs in the library");
-					} else {
-						for(int i = 0; i < favorite.size(); i++) {
-							System.out.println((i+1) + ". " + favorite.get(i));
-						}
-					}
+					if(favorite.size() == 0) System.out.println("No favorite songs in the library");
+					else getPrintText(favorite);
 				} else {
 					// do validation here!!!!!!!!
 					System.out.println("Wrong input");
 				}
 				
-				// ---------------------------------------------------------------------------------------- (Remove after done w/ function 2) (BOTTOM)
 			} else if (holdInputLower.split(" ")[0].equals("create") && holdInputLower.length() > 7
 					&& !(holdInputLower.substring(7).contains(" "))) {
 				String name = holdInputLower.split(" ")[1];
@@ -233,7 +206,7 @@ public class View {
         		String title = getInput.nextLine();
 				System.out.print("Enter an artist of the song you want to rate: ");
 				String artist = getInput.nextLine();
-				ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+				ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 				if(songs.size() == 0) {
 					System.out.println(title + " is not found in the store");
 				} else {
@@ -279,7 +252,7 @@ public class View {
         		String title = getInput.nextLine();
 				System.out.print("Enter an artist of the song you want to mark as favorite: ");
 				String artist = getInput.nextLine();
-				ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "library", "title");
+				ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "library", "title", true);
 				if(songs.size() == 0) {
 					System.out.println(title + " is not found in the library");
 				} else {
@@ -325,7 +298,7 @@ public class View {
 							System.out.print("Enter an artist of the song you want to add to a playlist: ");
 							String artist = getInput.nextLine();
 							String playlistName = playlists.get(num-1);
-							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 							if(songs.size() == 0) {
 								System.out.println(title + " is not found in the store");
 							}else {
@@ -380,7 +353,7 @@ public class View {
 							String playlistName = playlists.get(num-1);
 							boolean removed = false;
 							boolean exist = false;
-							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+							ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 							for(int i = 0; i < songs.size(); i++) {
 								if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
 									exist = true;
@@ -406,7 +379,7 @@ public class View {
 			} else if (holdInputLower.split(" ")[0].equals("exit")) {
 				// Kills the program
 				running = false;
-				System.out.println("DEBUG: EXITED");
+				System.out.println("Program exited.");
 			} else {
 				System.out.println("Invalid instruction! Did you spell everything right? Resetting.");
 				minimize = false;
@@ -422,7 +395,7 @@ public class View {
 	private boolean isNumeric(String num) {
 		boolean numeric = true;
         try {
-            Double number = Double.parseDouble(num);
+            Double.parseDouble(num);
         } catch (NumberFormatException e) {
             numeric = false;
         }
@@ -430,7 +403,7 @@ public class View {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException{
-		View bleh = new View();
+		new View();
 	}
 	
 	private void printAdditionText(boolean added, boolean exists, String title, String artist) {
@@ -446,9 +419,15 @@ public class View {
 		}
 	}
 	
+	private void getPrintText(ArrayList<String> listToRepeat) {
+		for(int i = 0; i < listToRepeat.size(); i++) {
+			System.out.println((i+1) + ". " + listToRepeat.get(i));
+		}
+	}
+	
 	// Specific Functions
 	private void addSong_Function(String title, String artist) {
-		ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title");
+		ArrayList<Song> songs = myLibrary.searchByIndicatorSong(title, "musicstore", "title", true);
 		if(songs.size() == 0) {
 			System.out.println(title + " is not found in the store");
 		}else {
@@ -470,7 +449,7 @@ public class View {
 	}
 	
 	private void addAlbum_Function(String title, String artist) {
-		ArrayList<Album> albums = myLibrary.searchByIndicatorAlbum(title, "musicstore", "title");
+		ArrayList<Album> albums = myLibrary.searchByIndicatorAlbum(title, "musicstore", "title", true);
 		if(albums.size() == 0) {
 			System.out.println(title + " is not found in the store");
 		}else {
