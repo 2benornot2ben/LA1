@@ -103,6 +103,39 @@ public class MusicStore {
 		throw new IllegalArgumentException("How did this even happen?");
 	}
 	
+	protected boolean rateASong(Song song, String command) {
+		boolean valid = false;
+		boolean successful = false;
+		// This loop does not NEED to exist in normal usage, but it does incase someone decides view isn't good enough.
+		for (Song songInst : songs) {
+			if (song.equals(songInst)) valid = true;
+		}
+		if (!valid) return false;
+		song = returnAuthenticSong(song);
+		boolean numeric = true;
+        try {
+            @SuppressWarnings("unused")
+			Integer number = Integer.parseInt(command);
+        } catch (NumberFormatException e) {
+            numeric = false;
+        }
+        if (numeric) {
+        	int setRating = Integer.parseInt(command);
+        	if (setRating < 1) setRating = 1; if (setRating > 5) setRating = 5;
+        	if (!(song.getRating() == setRating)) successful = true;
+        	song.setRating(setRating);
+        } else if (command.equals("favorite")) {
+        	successful = !(song.getFavorited());
+        	song.favorite();
+        } else if (command.equals("unfavorite")) {
+        	successful = (song.getFavorited());
+        	song.unfavorite();
+        } else successful = false;
+		return successful;
+		
+		
+	}
+	
 	// Rating Songs goes here (Because people can rate stuff out of their library)
 	// Ability to give lists of songs/albums based on specificaitons (User can search for these via the MusicStore)
 	// Can also give non-copies of their albums/songs to Library (obviously)

@@ -72,7 +72,7 @@ public class View {
 				System.out.println("Enter: \"Search\" \"MusicStore OR Library\" to begin SEARCHING (Library has Playlists)");
 				System.out.println("Enter: \"Add\" \"Album OR Song\" to add to Library or Playlists");
 				System.out.println("Enter: \"Create\" \"{PlaylistName}\" to create a new playlist. No spaces in the name."); 
-				System.out.println("Enter: \"Rate\" \"{SongName}\" to rate a song. You only need to type the first few letters."); // This will also handle FAVORITING
+				System.out.println("Enter: \"Rate\" \"{SongName}\" to rate a song."); // This will also handle FAVORITING
 				System.out.println("Enter: \"Get\" to get a list from the library."); 
 				System.out.println("Enter: \"AddP\" to add a song to a playlist");
 				System.out.println("Enter: \"RemoveP\" to remove a song from a playlist");
@@ -241,11 +241,54 @@ public class View {
 				}
 				
 			} else if (holdInputLower.split(" ")[0].equals("rate") && holdInputLower.length() > 5) {
-				// This will not allow you to search for nothing. Sorry. (Unless you consider spaces as "nothing")
-				//rateSong(holdInputLower.split(" ")[1]);
-				System.out.println("DEBUG: Rate Song");
+				String songName = holdInput.split(" ")[1];
+				System.out.print("Please enter the artist of the song: ");
+				String artist = getInput.nextLine();
+				String input = "";
+				ArrayList<Song> songs = myLibrary.searchByIndicatorSong(songName, "musicstore", "title", true);
+				if(songs.size() == 0) {
+					System.out.println(songName + " is not found in the store");
+				}else {
+					boolean added = false;
+					boolean exist = false;
+					for(int i = 0; i < songs.size(); i++) {
+						if(songs.get(i).getArtist().toLowerCase().equals(artist.toLowerCase())) {
+							System.out.print("Please enter your rating (1-5) or \"favorite\" / \"unfavorite\": ");
+							input = getInput.nextLine();
+							added = myLibrary.rateSong(songs.get(i), input.toLowerCase());
+							exist = true;
+						}
+					}
+					if(exist) {
+						if(added) {
+							if (isNumeric(input)) {
+								int quickShifter = Integer.parseInt(input);
+								if (quickShifter < 1) quickShifter = 1;
+								if (quickShifter > 5) quickShifter = 5;
+								System.out.println(songName + " by " + artist + " has been rated " + quickShifter + " stars.");
+							} else if (input.toLowerCase().equals("favorite")) {
+								System.out.println(songName + " by " + artist + " has been favorited.");
+							} else if (input.toLowerCase().equals("unfavorite")) {
+								System.out.println(songName + " by " + artist + " has been unfavorited.");
+							} else System.out.println("Invalid command, sending back...");
+						} else {
+							if (isNumeric(input)) {
+								int quickShifter = Integer.parseInt(input);
+								if (quickShifter < 1) quickShifter = 1;
+								if (quickShifter > 5) quickShifter = 5;
+								System.out.println(songName + " by " + artist + " was already rated " + quickShifter + " stars...");
+							} else if (input.toLowerCase().equals("favorite")) {
+								System.out.println(songName + " by " + artist + " was already favorited...");
+							} else if (input.toLowerCase().equals("unfavorite")) {
+								System.out.println(songName + " by " + artist + " was already unfavorited...");
+							} else System.out.println("Invalid command, sending back...");
+						}
+					} else {
+						System.out.println(songName + " by " + artist + " is not in the store");
+					}
+				}
 				
-			// addp changing --------------------------------------------------------------- remove when done
+
 			} else if (holdInputLower.split(" ")[0].equals("addp")) {
 				System.out.println("");
 				ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();
@@ -299,7 +342,7 @@ public class View {
 			        	System.out.println("Your input is invalid");
 			        }
 				}	
-				// addp changing --------------------------------------------------------------- remove when done
+
 			} else if (holdInputLower.split(" ")[0].equals("removep")) {
 				System.out.println("");
 				ArrayList<String> playlists = myLibrary.getLibraryPlaylistList();

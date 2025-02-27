@@ -112,6 +112,7 @@ public class LibraryModel{
 		for(int i = 0; i < playListList.size(); i++) {
 			if(playListList.get(i).getPlayListName().toLowerCase().equals(playlistName.toLowerCase())) {
 				if(playListList.get(i).canAddSongToList(song)) {
+					song = database.returnAuthenticSong(song);
 					playListList.get(i).addSong(song);
 					return true;
 				}
@@ -155,14 +156,18 @@ public class LibraryModel{
 	}
 	
 	public void addSongToList(Song song) {
-		songList.add(new Song(song));
+		// This also works as a dereferencing in this case. How convenient.
+		song = database.returnAuthenticSong(song);
+		songList.add(song);
 		if(!artistList.contains(song.getArtist())){
 			artistList.add(song.getArtist());
 		}
     }
 	
 	public void addAlbumToList(Album album) {
-		albumList.add(new Album(album));
+		// This also works as a dereferencing in this case. How convenient.
+		album = database.returnAuthenticAlbum(album);
+		albumList.add(album);
 		for (Song song : album.getSongList()) {
 	        if (!songList.contains(song)) {
 	            songList.add(song);
@@ -232,21 +237,7 @@ public class LibraryModel{
         }
 	}
 
-    // song names might be similar so we need to check other attributes like artist name ig.
-    // i dont know.
-    public void markSongAsFavorite(Song songInst){
-        for(int i = 0; i < songList.size(); i++){
-            if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).favorite();
-            }
-        }
-    }
-
-    public void rateSong(Song songInst, int rating){
-        for(int i = 0; i < songList.size(); i++){
-            if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).setRating(rating);
-            }
-        }
+    public boolean rateSong(Song songInst, String rating){
+        return database.rateASong(songInst, rating);
     }
 }
