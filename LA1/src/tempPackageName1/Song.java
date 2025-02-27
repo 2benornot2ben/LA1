@@ -29,6 +29,10 @@ public class Song {
         this.rating = incomingSong.getRating();
 	}
 	
+	public String getPrintFormatted() {
+		return getSongName() + " " + getArtist() + " " + getAlbumName();
+	}
+	
 	public String getSongName() {
 		return songName;
 	}
@@ -57,20 +61,20 @@ public class Song {
 		return favorited;
 	}
 	
-	protected void setRating(int n) {
+	public void setRating(int n) {
 		if (n < 1) n = 1;
 		if (n > 5) n = 5;
 		if (n == 5) favorited = true;
 		this.rating = n;
 	}
 	
-	protected void favorite() {
+	public void favorite() {
 		favorited = true;
 	}
 	
 	// Feels a bit weird splitting it up like this,
 	// but it's probably more useful like this.
-	protected void unfavorite() {
+	public void unfavorite() {
 		favorited = false;
 	}
 	
@@ -85,6 +89,4 @@ public class Song {
 	           genre.equals(song.genre) &&
 	           year.equals(song.year);
 	}
-	
-	
 }
