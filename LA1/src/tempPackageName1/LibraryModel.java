@@ -22,7 +22,7 @@ public class LibraryModel{
 		this.database = new MusicStore();
 	}
 	
-	public ArrayList<Song> searchByIndicatorSong(String input, String category, String indicator) {
+	public ArrayList<Song> searchByIndicatorSong(String input, String category, String indicator, boolean precise) {
 		ArrayList<Song> resultList = new ArrayList<Song>();
 		ArrayList<Song> songs;
 		if (category.equals("musicstore")) {
@@ -34,20 +34,32 @@ public class LibraryModel{
 		    }
 		}
 		for(int i = 0; i < songs.size(); i++) {
-			if (indicator.equals("title")) {
-				if (songs.get(i).getSongName().toLowerCase().contains(input.toLowerCase())) {
-					resultList.add(songs.get(i));
+			if (precise) {
+				if (indicator.equals("title")) {
+					if (songs.get(i).getSongName().toLowerCase().equals(input.toLowerCase())) {
+						resultList.add(songs.get(i));
+					}
+				} else {
+					if (songs.get(i).getArtist().toLowerCase().equals(input.toLowerCase())) {
+						resultList.add(songs.get(i));
+					}
 				}
 			} else {
-				if (songs.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
-					resultList.add(songs.get(i));
+				if (indicator.equals("title")) {
+					if (songs.get(i).getSongName().toLowerCase().contains(input.toLowerCase())) {
+						resultList.add(songs.get(i));
+					}
+				} else {
+					if (songs.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+						resultList.add(songs.get(i));
+					}
 				}
 			}
 		}
 		return resultList;
 	}
 	
-	public ArrayList<Album> searchByIndicatorAlbum(String input, String category, String indicator) {
+	public ArrayList<Album> searchByIndicatorAlbum(String input, String category, String indicator, boolean precise) {
 		ArrayList<Album> resultList = new ArrayList<Album>();
 		ArrayList<Album> albums;
 		if (category.equals("musicstore")) {
@@ -59,13 +71,26 @@ public class LibraryModel{
 		    }
 		}
 		for(int i = 0; i < albums.size(); i++) {
-			if (indicator.equals("title")) {
-				if (albums.get(i).getAlbumName().toLowerCase().contains(input.toLowerCase())) {
-					resultList.add(albums.get(i));
+			// As much as I wish to simplify this, it simply cannot be done...
+			if (precise) {
+				if (indicator.equals("title")) {
+					if (albums.get(i).getAlbumName().toLowerCase().equals(input.toLowerCase())) {
+						resultList.add(albums.get(i));
+					}
+				} else {
+					if (albums.get(i).getArtist().toLowerCase().equals(input.toLowerCase())) {
+						resultList.add(albums.get(i));
+					}
 				}
 			} else {
-				if (albums.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
-					resultList.add(albums.get(i));
+				if (indicator.equals("title")) {
+					if (albums.get(i).getAlbumName().toLowerCase().contains(input.toLowerCase())) {
+						resultList.add(albums.get(i));
+					}
+				} else {
+					if (albums.get(i).getArtist().toLowerCase().contains(input.toLowerCase())) {
+						resultList.add(albums.get(i));
+					}
 				}
 			}
 		}
@@ -199,19 +224,31 @@ public class LibraryModel{
 	
     // song names might be similar so we need to check other attributes like artist name ig.
     // i dont know.
-    public void markSongAsFavorite(Song songInst){
+    public boolean markSongAsFavorite(Song songInst){
         for(int i = 0; i < songList.size(); i++){
             if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).favorite();
+            	if(!songList.get(i).getFavorited()) {
+            		songList.get(i).favorite();
+            		
+                    return true;
+            	} else {
+            		return false;
+            	}
             }
         }
+        return false;
     }
 
     public void rateSong(Song songInst, int rating){
-        for(int i = 0; i < songList.size(); i++){
-            if(songList.get(i).getSongName().equals(songInst.getSongName())){
-                songList.get(i).setRating(rating);
-            }
+         for(int i = 0; i < songList.size(); i++) {
+        	if(songList.get(i).equals(songInst)) {
+        		songList.get(i).setRating(rating);
+        		if(rating == 5) {
+        			songList.get(i).favorite();
+                } else {
+                	songList.get(i).unfavorite();
+                }
+        	}
         }
     }
 }
