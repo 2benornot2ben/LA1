@@ -13,7 +13,7 @@ class AlbumTEST {
 		assertEquals(initAlbum.getArtist(), "Ben");
 		assertEquals(initAlbum.getGenre(), "Metal");
 		assertEquals(initAlbum.getYear(), "2025");
-		assertEquals(initAlbum.getPrintFormatted(), "Flyers Ben Metal 2025");
+		assertEquals(initAlbum.getPrintFormatted(), "Flyers, Ben, Metal, 2025");
 	}
 	
 	@Test

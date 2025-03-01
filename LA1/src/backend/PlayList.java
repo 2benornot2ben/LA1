@@ -34,7 +34,8 @@ public class PlayList {
 	public boolean canAddSongToList(Song song) {
 		/* Determines if a song is already inside it's list. */
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().toLowerCase().equals(song.getSongName()) && songs.get(i).getArtist().toLowerCase().equals(song.getArtist())) {
+			//if(songs.get(i).getSongName().toLowerCase().equals(song.getSongName()) && songs.get(i).getArtist().toLowerCase().equals(song.getArtist())) {
+			if (songs.get(i).equals(song)) {
 				// No need to iterate more; it is.
 				return false;
 			}

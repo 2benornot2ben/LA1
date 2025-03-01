@@ -69,6 +69,9 @@ public class LibraryModelTEST {
         result = libraryModel.searchByIndicatorAlbum("a2", "library", "artist", true);
         assertEquals(1, result.size());
         assertEquals("a2", result.get(0).getArtist());
+        result = libraryModel.searchByIndicatorAlbum("a2", "library", "artist", false);
+        assertEquals(1, result.size());
+        assertEquals("a2", result.get(0).getArtist());
     }
 
     @Test
@@ -174,6 +177,17 @@ public class LibraryModelTEST {
         assertTrue(libraryModel.canAddAlbumToList(new Album("3", "1", "1", "2")));
         assertTrue(libraryModel.canAddAlbumToList(new Album("1", "3", "1", "1")));
         assertTrue(libraryModel.canAddAlbumToList(new Album("3", "3", "1", "2")));
+    }
+    
+    @Test
+    public void testCannotRepeatedlyAddAlbum() {
+    	Album album1 = new Album("1", "2", "3", "4");
+    	Song song1 = new Song("1", "2", "3", "4", "5");
+    	Song song2 = new Song("6", "7", "8", "9", "10");
+    	album1.addSong(song1);
+    	libraryModel.addAlbumToList(album1);
+    	album1.addSong(song2);
+    	libraryModel.addAlbumToList(album1);
     }
 
 
