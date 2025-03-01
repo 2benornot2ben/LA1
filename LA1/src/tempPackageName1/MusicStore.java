@@ -47,7 +47,6 @@ public class MusicStore {
 		for(int i = 0; i < this.fileNames.size(); i++){
 			File myFile = new File(fileNames.get(i));
 			Scanner myReader = new Scanner(myFile);
-
 			//reads only first line which is in the following format
 			//Album Title,Artist,Genre,Year
 			String header = myReader.nextLine();
