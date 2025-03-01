@@ -141,39 +141,39 @@ public class LibraryModelTEST {
     
     @Test
     public void testSearchByNamePlayList() {
-        libraryModel.addPlayList("Playlist1");
-        PlayList result = libraryModel.searchByNamePlayList("Playlist1");
+        libraryModel.addPlayList("p1");
+        PlayList result = libraryModel.searchByNamePlayList("p1");
         assertNotNull(result);
-        assertEquals("Playlist1", result.getPlayListName());
-        result = libraryModel.searchByNamePlayList("NonexistentPlaylist");
+        assertEquals("p1", result.getPlayListName());
+        result = libraryModel.searchByNamePlayList("p4");
         assertEquals("", result.getPlayListName());
-        result = libraryModel.searchByNamePlayList("playlist1");
+        result = libraryModel.searchByNamePlayList("p1");
         assertNotNull(result);
-        assertEquals("Playlist1", result.getPlayListName());
+        assertEquals("p1", result.getPlayListName());
     }
     
     @Test
     public void testCanAddSongToList() {
-        Song song1 = new Song("Song1", "Artist1", "Genre1", "Album1", "2023");
-        Song song2 = new Song("Song2", "Artist2", "Genre2", "Album2", "2024");
+        Song song1 = new Song("1", "1", "1", "1", "1");
+        Song song2 = new Song("2", "2", "2", "2", "2");
         libraryModel.addSongToList(song1);
         libraryModel.addSongToList(song2);
-        assertFalse(libraryModel.canAddSongToList(new Song("Song1", "Artist1", "Genre1", "Album1", "2023")));
-        assertTrue(libraryModel.canAddSongToList(new Song("Song3", "Artist1", "Genre1", "Album3", "2025")));
-        assertTrue(libraryModel.canAddSongToList(new Song("Song1", "Artist3", "Genre1", "Album1", "2023")));
-        assertTrue(libraryModel.canAddSongToList(new Song("Song3", "Artist3", "Genre1", "Album3", "2025")));
+        assertFalse(libraryModel.canAddSongToList(new Song("1", "1", "1", "1", "1")));
+        assertTrue(libraryModel.canAddSongToList(new Song("3", "1", "1", "1", "1")));
+        assertTrue(libraryModel.canAddSongToList(new Song("1", "3", "1", "1", "1")));
+        assertTrue(libraryModel.canAddSongToList(new Song("3", "3", "1", "1", "1")));
     }
 
     @Test
     public void testCanAddAlbumToList() {
-        Album album1 = new Album("Album1", "Artist1", "Genre1", "2023");
-        Album album2 = new Album("Album2", "Artist2", "Genre2", "2024");
+        Album album1 = new Album("1", "1", "1", "1");
+        Album album2 = new Album("2", "2", "2", "1");
         libraryModel.addAlbumToList(album1);
         libraryModel.addAlbumToList(album2);
-        assertFalse(libraryModel.canAddAlbumToList(new Album("Album1", "Artist1", "Genre1", "2023")));
-        assertTrue(libraryModel.canAddAlbumToList(new Album("Album3", "Artist1", "Genre1", "2025")));
-        assertTrue(libraryModel.canAddAlbumToList(new Album("Album1", "Artist3", "Genre1", "2023")));
-        assertTrue(libraryModel.canAddAlbumToList(new Album("Album3", "Artist3", "Genre1", "2025")));
+        assertFalse(libraryModel.canAddAlbumToList(new Album("1", "1", "1", "1")));
+        assertTrue(libraryModel.canAddAlbumToList(new Album("3", "1", "1", "2")));
+        assertTrue(libraryModel.canAddAlbumToList(new Album("1", "3", "1", "1")));
+        assertTrue(libraryModel.canAddAlbumToList(new Album("3", "3", "1", "2")));
     }
 
 
