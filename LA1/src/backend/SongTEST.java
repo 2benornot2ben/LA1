@@ -54,7 +54,7 @@ class SongTEST {
 	@Test
 	void test_05() {
 		Song initSong = new Song("Hello", "there you", "lovely people!", "Don't print this", "or this!");
-		assertEquals(initSong.getPrintFormatted(), "Hello there you lovely people!");
+		assertEquals(initSong.getPrintFormatted(), "Hello, there you, lovely people!");
 	}
 	
 	@Test
