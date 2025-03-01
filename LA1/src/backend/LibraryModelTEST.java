@@ -166,7 +166,6 @@ public class LibraryModelTEST {
 
     @Test
     public void testCanAddAlbumToList() {
-        // Create album instances
         Album album1 = new Album("Album1", "Artist1", "Genre1", "2023");
         Album album2 = new Album("Album2", "Artist2", "Genre2", "2024");
         libraryModel.addAlbumToList(album1);
