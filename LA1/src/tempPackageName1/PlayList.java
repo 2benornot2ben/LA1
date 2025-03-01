@@ -17,13 +17,12 @@ public class PlayList {
 	}
 	
 	public void addSong(Song songInst) {
-		// This shouldn't matter in normal usage, BUT might aswell be safe.
 		songs.add(new Song(songInst));
 	}
 
 	public boolean canAddSongToList(Song song) {
 		for(int i = 0; i < songs.size(); i++) {
-			if(songs.get(i).getSongName().toLowerCase().equals(song.getSongName()) && songs.get(i).getArtist().toLowerCase().equals(song.getArtist())) {
+			if(songs.get(i).getSongName().toLowerCase().equals(song.getSongName().toLowerCase()) && songs.get(i).getArtist().toLowerCase().equals(song.getArtist().toLowerCase())) {
 				return false;
 			}
 		}
